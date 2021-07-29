@@ -3,10 +3,9 @@
 <script>
 const str1 = prompt('Enter an expression: '); 
 const str2 = prompt('Enter search request: ');
-function search(str1,str2){
-	const testStr = str1; 
+function search(str1,str2){ 
   const regMatch = new RegExp(str2, 'gi');
-  if ((testStr.match(regMatch)) != null )
+  if ((str1.match(regMatch)) != null )
       return 'Matched';
   else 
       return 'Not matched';
