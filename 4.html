@@ -1,0 +1,39 @@
+</head>  
+<body>  
+<script>
+
+const myObj = {
+  firstName: 'Kate',
+  secondName: 'Dudarha'
+};
+
+if (typeof myObj === 'object') {
+	document.write("Input object: "+'<br>');
+	for (const [key, value] of Object.entries(myObj)) {
+  		document.write(`${key}: ${value} `+ '<br>');
+	}
+}
+else{
+	document.write('the input is not an object');
+}
+
+function exchange(obj) {
+  const res = {};
+  Object.keys(obj).forEach(function(value) {
+    const key = obj[value];
+    res[key] = value;
+  });
+  return res;
+};
+
+const result = (exchange(myObj)); 
+
+document.write("Result object: "+'<br>');
+for (const [key, value] of Object.entries(result)) {
+		document.write(`${key}: ${value} `+ '<br>');
+}
+
+
+</script>  
+</body>  
+</html>
