@@ -1,0 +1,20 @@
+<html>  
+<head>   
+</head>  
+<body>  
+<script>
+const str1 = prompt('Enter a sentence: '); 
+const str2 = prompt('Enter search request: ');
+function search(str1,str2){ 
+  const regMatch = new RegExp(str2, 'g');
+  if ((str1.match(regMatch).length) > 0 ){
+  	  const res = str1.match(regMatch).length;
+      return ('Count: '+res);
+  }
+  else 
+      return 'Not matched';
+}
+document.write(search(str1,str2));
+</script>  
+</body>  
+</html>

@@ -1,0 +1,23 @@
+<body>  
+<script>
+ async function printMessage(message) {
+        
+      return console.log(message + " - message recieved");
+    }
+    let arr = [
+      "Hello",
+      "What time is it?",
+      "It's time to sleep."
+    ];
+    Promise.resolve(() => {
+      return printMessage(arr[0]);
+    })
+      .then(() => {
+        return printMessage(arr[1]);
+      })
+      .then(() => {
+        return printMessage(arr[2]);
+      });
+</script>  
+</body>  
+</html>

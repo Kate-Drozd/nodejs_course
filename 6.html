@@ -1,0 +1,21 @@
+<html>  
+<head>  
+<title></title>  
+</head>  
+<body>  
+<script>
+const str = prompt('Enter an expression: '); 
+const separator = prompt('Enter separator or nothing: ');
+function uncamelize(str, separator) {
+  if(separator === "") {
+    separator = " ";
+  }
+  const strUncamelized = str.replace(/[A-Z]/g, function (lowerLetter){
+    return separator + lowerLetter.toLowerCase();
+  });
+  return strUncamelized
+}
+document.write(uncamelize(str,separator));
+</script>  
+</body>  
+</html>
