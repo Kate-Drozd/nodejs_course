@@ -20,12 +20,13 @@ else{
 }
 
 function exchange(obj) {
-  const res = {};
-  Object.keys(obj).forEach(function(value) {
-    const key = obj[value];
-    res[key] = value;
-  });
-  return res;
+  const newObj = Object.keys(obj).reduce((accamulator, key)=> {
+    if (obj.hasOwnProperty(key)) {
+      accamulator[obj[key]] = key;
+    }
+    return accamulator;
+  }, {});
+  return newObj;
 };
 
 const result = (exchange(myObj)); 
