@@ -2,7 +2,7 @@
 //       import an instance of FileProcessor class from fileProcessor.js as 'fileProcessingEventEmitter'
 //       create listeners and listen to events (define by yourself what you want to do inside the listeners)
 //       handle 'error' event
-
+const fileProcessingEventEmitter = ('./fileProcessor');
 function listenerForPrepare(...messages) {
     // this listener is an example: he wants to be subscribed on 'prepare' event
     console.log('"prepare" event has been handled');

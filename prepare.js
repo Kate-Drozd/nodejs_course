@@ -6,7 +6,7 @@
 //   d   - function checkOutputFolder(): Check "output" folder. If 'output' folder exists, throw an error:
 //                                      "Output folder is here, but need to be removed (use cleanup script)"
 //                                      If there is no folder, proceed
-//      - function createOutputFolder(): Create directory "output"
+//   d   - function createOutputFolder(): Create directory "output"
 
 //      NOTE: file can be executed as script and can be exported, you need to handle both cases
 
@@ -45,7 +45,7 @@ function checkDataFolder() {
 function checkOutputFolder() {
     if (fs.existsSync('./Output')) {
         throw new Error("Output folder is here, but need to be removed");
-        cleanup.cleanup(); //не забыть передать парам
+        cleanup.cleanup(); 
     }
     return
 }
