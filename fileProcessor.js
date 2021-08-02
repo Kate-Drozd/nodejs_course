@@ -1,10 +1,6 @@
 'use strict'
 /**
- * Used resources:
- * https://nodejs.org/docs/latest-v12.x/api/fs.html
  * https://nodejs.org/docs/latest-v12.x/api/buffer.html
- * https://nodejs.org/docs/latest-v12.x/api/events.html
- * https://www.tutorialspoint.com/nodejs/nodejs_event_emitter.htm
  */
 //      The main goal - copy files from folder "data" to "output" folder (using fs module) and emit events
 
@@ -27,7 +23,7 @@ class FileProcessor extends EventEmitter {
     }
     dealWithEventsInStreamsInFs() {
         // TODO: Set utf-8 encoding for the read stream
-        const readStream = fs.createReadStream("some file");
+        const readStream = fs.createReadStream("some file", "utf8");
 
         readStream.on("data", (chunk) => {
             // TODO: count chunks and append file in output folder with each chunk
