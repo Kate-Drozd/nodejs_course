@@ -1,5 +1,7 @@
 const fs = require("fs");
-function cleanup () {
-	fs.rmdir('./Output'=>{console.log('Output directory removed successfully!')})
+module.exports = function cleanup () {
+	fs.rmdirSync('./output', { recursive: true }, (err) => {
+  		if (err) throw err;
+	})
+	console.log('Output directory removed successfully!');
 }
-module.exports.cleanup = cleanup();

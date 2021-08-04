@@ -4,8 +4,7 @@ const fs = require('fs');
 const {isEqual, difference} = require('lodash');
 const {requiredFiles} = require('./resources.json');
 
-
-function prepareWorkspace() {
+module.exports = function prepareWorkspace() {
     checkGitignore();
     checkDataFolder();
     checkOutputFolder();
@@ -32,23 +31,19 @@ function checkDataFolder() {
 }
 
 function checkOutputFolder() {
-    if (fs.existsSync('./Output')) {
+    if (fs.existsSync('./output')) {
         throw new Error("Output folder is here, but need to be removed");
     }
     return
 }
 
 function createOutputFolder() {
-    fs.mkdir('./Output', { recursive: true }, (err) => {
+    fs.mkdir('./output', { recursive: true }, (err) => {
   if (err) throw err;
 });
     console.log('Output directory created successfully!');
 }
 
 if(require.main === module){
-    // this module was run directly from the command line as in node xxx.js
     prepareWorkspace();
-} else {
-    // this module was not run directly from the command line and probably loaded by something else
-    module.exports = prepareWorkspace();
-}
+} 

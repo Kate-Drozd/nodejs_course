@@ -1,13 +1,8 @@
 'use strict'
-/**
- * https://nodejs.org/docs/latest-v12.x/api/buffer.html
- */
-//      The main goal - copy files from folder "data" to "output" folder (using fs module) and emit events
 
 const EventEmitter = require('events');
-EventEmitter.captureRejection = true; //node --unhandled-rejections=strict
+EventEmitter.captureRejection = true; 
 const fs = require("fs");
-const prepare = require("./prepare");
 
 class FileProcessor extends EventEmitter {
     constructor(props) {
@@ -15,33 +10,41 @@ class FileProcessor extends EventEmitter {
     }
 
     run() {
-        prepare();
-        this.emit('prepare');
-        // TODO: call here 'dealWithEventsInStreamsInFs' and 'dealWithStreamsInFs' and emit events
-
-        this.emit('error', 'Some error message'); // this error has to be handled in listeners
+        this.dealWithEventsInStreamsInFs();
+        this.emit('data');       
+        this.emit('end');
+        this.dealWithStreamsInFs();
+        this.emit('pdf');
+        this.emit('error'); 
     }
     dealWithEventsInStreamsInFs() {
-        // TODO: Set utf-8 encoding for the read stream
-        const readStream = fs.createReadStream("some file", "utf8");
-
+        const readStream = fs.createReadStream("./data/small.txt", "utf8");
+        const writeStream = fs.createWriteStream('./output/small.txt');
+        let count =  0;
         readStream.on("data", (chunk) => {
-            // TODO: count chunks and append file in output folder with each chunk
+            writeStream.write(chunk); 
+            count +=  chunk.length;
         })
-
-        readStream.on("end", () => {
-            // TODO:
-            //  emit event (e.g. 'end') that you finish to read from the stream
-            //  add to event a message with number of chunks (as an event argument)
+        .on("end", () => {
+           console.log("Finished read the stream, number of chunks: ", count);
         })
+        readStream.on('error', function(err){
+            if(err.code == 'ENOENT'){
+                console.log("Файл не найден");
+            }else{
+                console.error(err);
+            }
+        });
 
         console.log("Main is finished, but streams are still working");
     }
 
     dealWithStreamsInFs() {
-        const readStream = fs.createReadStream('./data/<file_name>.pdf');
-        const writeStream = fs.createWriteStream('./output/<file_name>.pdf');
-        // Use pipe here to read from one stream and write to another
+        const readStream = fs.createReadStream('./data/big.pdf');
+        const writeStream = fs.createWriteStream('./output/big.pdf');
+        readStream.on('pdf',() => {
+            readStream.pipe(writeStream);
+        });
     }
 }
 
