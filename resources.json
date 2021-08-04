@@ -1,3 +1,4 @@
 {
-    "requiredFiles": [<add here list of names of required files>]
+    "requiredFiles": ["big.pdf", "small.txt"]
+    
 }

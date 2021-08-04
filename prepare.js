@@ -1,19 +1,8 @@
 'use strict'
 
-
-// TODO: Prepare working directory script:
-//   d   - function checkGitignore(): Check if ".gitignore" file exists, otherwise throw an error: "No '.gitignore' file. Please create .gitignore' file, otherwise all .txt files will be commited"
-//   d   - function checkOutputFolder(): Check "output" folder. If 'output' folder exists, throw an error:
-//                                      "Output folder is here, but need to be removed (use cleanup script)"
-//                                      If there is no folder, proceed
-//   d   - function createOutputFolder(): Create directory "output"
-
-//      NOTE: file can be executed as script and can be exported, you need to handle both cases
-
 const fs = require('fs');
 const {isEqual, difference} = require('lodash');
 const {requiredFiles} = require('./resources.json');
-const cleanup = require('./cleanup.js');
 
 
 function prepareWorkspace() {
@@ -45,13 +34,15 @@ function checkDataFolder() {
 function checkOutputFolder() {
     if (fs.existsSync('./Output')) {
         throw new Error("Output folder is here, but need to be removed");
-        cleanup.cleanup(); 
     }
     return
 }
 
 function createOutputFolder() {
-    fs.mkdir('./Output'=>{console.log('Output directory created successfully!')});
+    fs.mkdir('./Output', { recursive: true }, (err) => {
+  if (err) throw err;
+});
+    console.log('Output directory created successfully!');
 }
 
 if(require.main === module){
