@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Jobs } = require("../models");
 
-
+/*
 Jobs.create({
     name: "LeverX"
   }).then(res=>{
@@ -13,7 +13,7 @@ Jobs.create({
     name: "Google"
   }).then(res=>{
     console.log(res);
-  }).catch(err=>console.log(err));
+  }).catch(err=>console.log(err));*/
 
 router.get("/", async (req, res) => {
   const listOfJobs = await Jobs.findAll();

@@ -19,9 +19,6 @@ module.exports = function(sequelize, DataTypes) {
    timestamps: false
  });  
 
-Workers.associate = (models) =>{
-    Workers.belongsToMany(models.Jobs, {through: `${models.Worker_job}`});
-  }
 
   return Workers;                                                                                          
 };

@@ -10,7 +10,7 @@ const db = mysql.createPool({
   database: 'work',
   host: "localhost",
   user: "root",
-  password: "3123",
+  password: "",
 });
 
 app.use(

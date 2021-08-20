@@ -4,7 +4,7 @@ const { Worker_job, Workers, Jobs } = require("../models");
 const db = require("../models");
 
 
-Worker_job.create({
+/*Worker_job.create({
     workerID: 1,
     jobID: 1,
     startDate: new Date(),
@@ -32,43 +32,104 @@ Worker_job.create({
     salary: 1000
   }).then(res=>{
     console.log(res);
-  }).catch(err=>console.log(err));
+  }).catch(err=>console.log(err));*/
 
 
-router.get("/api/getStatsForWorker/:workerID", function(req, res){
+router.get("/StatsForWorker/:workerID", function(req, res){
     const id = req.params.workerID;
-  //const sqlSelect = "select jobs.name, worker_job.startDate, worker_job.salary, if (@i:=@i+1 < 2, (select sum(salary) 
-  //from worker_job where workerID = ?), null) as 'Общая ЗП по всем работам' from worker_job join (select @i:=0) as c 
-  //join jobs on worker_job.jobID = jobs.jobID where workerID = ? " ; 
-     Worker_job.findAll({
-      where: {workerID : id},
-      attributes: [
-      'startDate',
-      'salary',     
-      [db.sequelize.fn('SUM', db.sequelize.col('salary')), 'Общая ЗП по всем работам']
-    ],
-      include: [
-        {
-          model: Workers,
-          attributes:['firstName', 'lastName'],
-          where : {workerID: {$col: 'Worker_job.workerID'}}
-                    
-        },
-        {
-          model: Jobs,
-
-          attributes:'name',
-          where:{ jobID: {$col: 'Worker_job.jobID'}}
-        }
-      ],
-      raw: true
-
+     Jobs.findAll({
       
+      include: [{
+        model: Workers,
+        through: {
+          model: Worker_job,
+          attributes: ['hoursPerDay', 'salary', 'startDate'], 
+          where: {workerID : id}
+        }
+      }],
+     attributes: [
+     'name'
+     ],
+      raw: true   
     }).then(data => {
-    
-      res.send(data)
+      Worker_job.findAll({
+        where: {workerID: id},
+        attributes:[[db.sequelize.fn('SUM', db.sequelize.col('salary')), 'Общая ЗП по всем работам']]
+      }).then(sum =>{
+        res.send({data, sum})
+      }) 
+        
     });
 });
+
+router.get("/StatsForJob/:jobID", function(req, res){
+    const id = req.params.jobID;
+     Workers.findAll({
+      
+      include: [{
+        model: Jobs,
+        through: {
+          model: Worker_job,
+          attributes: ['hoursPerDay', 'salary', 'startDate'], 
+          where: {jobID : id}
+        }
+      }],
+     attributes: [
+     'firstName',
+     'lastName'
+     ],
+      raw: true   
+    }).then(data => {
+      Worker_job.findAll({
+        where: {jobID: id},
+        attributes:[[db.sequelize.fn('SUM', db.sequelize.col('salary')), 'Общая ЗП по всем работам']]
+      }).then(sum =>{
+        res.send({data, sum})
+      }) 
+        
+    });
+});
+
+router.post('/insert', function(req,res){
+      const jobIDr = req.body.jobID;
+      const workerIDr = req.body.workerID;
+      const startDater= new Date();
+      const hoursPerDayr =  req.body.hoursPerDay;
+      const salaryr = req.body.salary;
+
+      Worker_job.findAll({
+        where : {workerID : workerIDr},
+        attributes:[[db.sequelize.fn('SUM', db.sequelize.col('hoursPerDay')), 'hoursSum']]
+      }).then(hours =>{
+        const result = JSON.parse( JSON.stringify(hours, null, 4) );
+         console.log(hoursPerDayr + parseInt(result[0].hoursSum));
+        if ((parseInt(result[0].hoursSum) + hoursPerDayr)  < 21) {
+          Worker_job.create({
+            jobID : jobIDr,
+            workerID: workerIDr,
+            startDate: startDater,
+            hoursPerDay: hoursPerDayr,
+            salary: salaryr
+          }).then(res=>{
+            console.log(res);
+          }).catch(err=>console.log(err));
+        } else {
+          console.log('нельзя работать > 20 часов  сутки!')
+        }
+      }).catch(err=>console.log(err));
+   
+});
+
+router.delete('/delete/:recordID', function(req,res){
+  const id =  req.params.recordID
+  Worker_job.destroy({
+  where: {
+    recordID: id
+  }
+}).then((res) => {
+  console.log(res);
+});
+})
 
 router.get("/", async (req, res) => {
   const listOfWorker_job = await Worker_job.findAll();

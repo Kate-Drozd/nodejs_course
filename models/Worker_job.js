@@ -1,3 +1,5 @@
+const  Workers  = require("./Workers.js");
+const  Jobs  = require("./Jobs.js");
 module.exports = function(sequelize, DataTypes) {                                                    
       
   const Worker_job = sequelize.define("Worker_job", {
@@ -9,11 +11,20 @@ module.exports = function(sequelize, DataTypes) {
     },
     workerID: {                    
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: Workers,
+        key : 'workerID'
+      }
+
     },
     jobID: {                    
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: Jobs,
+        key : 'jobID'
+      }
     },
     startDate: {                    
       type: DataTypes.DATE,
@@ -31,6 +42,10 @@ module.exports = function(sequelize, DataTypes) {
    timestamps: false
  });  
 
+Worker_job.associate = (models) =>{
+    models.Jobs.belongsToMany(models.Workers, {through: models.Worker_job, foreignKey: 'jobID'});
+    models.Workers.belongsToMany(models.Jobs, {through: models.Worker_job, foreignKey: 'workerID'});
+  }
 
 
   return Worker_job;

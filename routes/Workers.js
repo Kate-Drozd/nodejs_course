@@ -4,7 +4,7 @@ const router = express.Router();
 const { Workers } = require("../models");
 
 
-Workers.create({
+/*Workers.create({
     firstName: "Kate",
     lastName: 'Dudorga'
   }).then(res=>{
@@ -16,7 +16,7 @@ Workers.create({
     lastName: 'Soyer'
   }).then(res=>{
     console.log(res);
-  }).catch(err=>console.log(err));
+  }).catch(err=>console.log(err));*/
 
 router.get("/", async (req, res) => {
   const listOfWorkers = await Workers.findAll();
