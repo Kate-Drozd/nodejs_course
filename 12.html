@@ -1,0 +1,67 @@
+<body>  
+<script>
+  // first TODO:
+function getCities(url){ 
+  fetch(url)
+  .then((response) => {
+    if (response.ok){
+    return response.json();
+    } else {
+      alert("Ошибка HTTP: " + response.status);
+    }
+  })
+  .then((data) => {
+    console.log(data.standard.city + ' - ' + data.standard.countryname);
+  });
+}
+const minsk = 'http://geocode.xyz/Minsk?json=1&auth=656222711979741750599x72111';
+const madrid = 'http://geocode.xyz/Madrid?json=1&auth=656222711979741750599x72111';
+const rome = 'http://geocode.xyz/Rome?json=1&auth=656222711979741750599x72111';
+
+getCities(minsk);
+getCities(madrid);
+getCities(rome);
+
+ // second TODO:
+const urls = [
+  'http://geocode.xyz/Paris?json=1&auth=656222711979741750599x72111',
+  'http://geocode.xyz/Nice?json=1&auth=656222711979741750599x72111'
+];
+
+const requests = urls.map(url => fetch(url));
+
+Promise.race(requests)
+  .then((response) => {
+    if (response.ok){
+    return response.json();
+    } else {
+      alert("Ошибка HTTP: " + response.status);
+    }
+  })
+  .then((data) => {
+    console.log(data.standard.countryname);
+  });
+
+ // third TODO:
+  function resolveAfter3Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("Toronto, Shanghai");
+    }, 3000);
+  });
+}
+const cities = resolveAfter3Seconds();
+
+cities.then((value) => {
+  const cityArr = value.split(', ');
+  const citiesURLs = [];
+  for(const city of cityArr){
+    citiesURLs.push(`http://geocode.xyz/${city}?json=1&auth=656222711979741750599x72111`)
+  }
+  citiesURLs.forEach((item) => {
+  getCities(item);
+});
+});
+</script>  
+</body>  
+</html>

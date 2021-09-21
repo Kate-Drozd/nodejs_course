@@ -1,0 +1,16 @@
+<html>  
+<head>   
+</head>  
+<body>  
+<script>
+function resolveAfter6Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log('resolved after 6 seconds');
+    }, 6000);
+  });
+}
+resolveAfter6Seconds();
+</script>  
+</body>  
+</html>

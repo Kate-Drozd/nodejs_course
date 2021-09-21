@@ -1,0 +1,37 @@
+<html>  
+<head>   
+</head>  
+<body>  
+<script>
+const str1 = prompt('Enter an array: '); 
+const str2 = prompt('Enter another array: ');
+function makeArray(enteredString){
+	const newArray = enteredString.replace(/,/g," ")
+								  .replace(/[^ 0-9]/g,"")
+								  .replace(/ {1,}/g," ")  // read a string and make a format like:" 1 2 3 4 5"
+								  .trim()
+								  .split(' '); //make an array
+	return newArray;
+}
+const array1 = makeArray(str1);
+const array2 = makeArray(str2);
+const setA = new Set(array1),
+      setB = new Set(array2);
+
+function union(setA, setB) {
+    const _union = new Set(setA);
+    for (const elem of setB) {
+        _union.add(elem);
+    }
+    return _union;
+}
+const result = union(setA,setB);
+const myArr = Array.from(result);
+myArr.sort(function(a, b) {
+  return a - b;
+});
+document.write("the unique elements from two arrays: " + "<br>");
+document.write(myArr);
+</script>  
+</body>  
+</html>
